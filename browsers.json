@@ -1,0 +1,25 @@
+{ "Chrome": {
+    "os": "Windows",
+    "os_version": "10",
+    "browser": "Chrome",
+    "browser_version": "latest",
+    "browserstack.local": "false",
+    "browserstack.selenium_version": "3.14.0"
+},
+"Firefox": {
+    "os": "Windows",
+    "os_version": "10",
+    "browser": "Firefox",
+    "browser_version": "latest",
+    "browserstack.local": "false",
+    "browserstack.selenium_version": "3.14.0"
+},
+"Safari": {
+    "os": "OS X",
+    "os_version": "Catalina",
+    "browser": "Safari",
+    "browser_version": "latest",
+    "browserstack.local": "false",
+    "browserstack.selenium_version": "3.14.0"
+}
+}
