@@ -23,7 +23,7 @@ def driver(request):
     caps["browserstack.user"] = username
     caps["browserstack.key"] = access_key
     caps["project"] = 'CE-Challenge'
-    caps["name"] = "amazon-scroller"
+    caps["name"] = "amazon-scroller-" + request.param
     caps["build"] = buildName
     driver = webdriver.Remote(
         command_executor="https://hub-cloud.browserstack.com/wd/hub",
@@ -36,7 +36,7 @@ def test_amazon(driver):
     searchInput = driver.find_element_by_class_name("nav-search-field").find_element_by_tag_name("input")
     searchInput.send_keys("iPhone X")
     driver.find_element_by_xpath("//input[@value='Go']").click()
-
+    WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.ID, "low-price")))
     driver.find_element_by_id("low-price").send_keys("0")
     driver.find_element_by_id("high-price").send_keys("1000")
     driver.find_element_by_id("high-price").send_keys(Keys.ENTER)
@@ -44,13 +44,25 @@ def test_amazon(driver):
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.ID, "filters")))
     driver.find_element_by_id("filters").find_element_by_xpath("//span[text()='iOS']").click()
 
+
     driver.find_element_by_xpath("//span[text()='Sort by:']").click()
+    WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Price: High to Low")))
     driver.find_element_by_link_text("Price: High to Low").click()
 
     
-    items = driver.find_elements_by_xpath("//span[@data-component-type='s-result-item']")
+    items = driver.find_elements_by_xpath("//div[contains(@class,'s-main-slot')]//div[@data-component-type='s-search-result']")
     for item in items:
-        assert item.find_element_by_tag_name("h2").text
+        name=item.find_element_by_tag_name("h2")
+        print("====Name====")
+        print(name.text)
+        print("====Link====")
+        print(name.find_element_by_tag_name('a').get_attribute("href"))
+        prices = item.find_elements_by_class_name("a-price")
+        for price in prices:
+            print("====price=====")
+            print(price.find_element_by_class_name('a-price-symbol').text + price.find_element_by_class_name('a-price-whole').text + '.' + price.find_element_by_class_name("a-price-fraction").text)
+    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"} }')
+
         
 
 
