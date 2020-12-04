@@ -28,6 +28,7 @@ def driver(request):
     driver = webdriver.Remote(
         command_executor="https://hub-cloud.browserstack.com/wd/hub",
         desired_capabilities=caps)
+    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed"} }')
     yield driver
     driver.quit()
 
@@ -39,7 +40,7 @@ def test_amazon(driver):
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.ID, "low-price")))
     driver.find_element_by_id("low-price").send_keys("0")
     driver.find_element_by_id("high-price").send_keys("1000")
-    driver.find_element_by_id("high-price").send_keys(Keys.ENTER)
+    driver.find_element_by_xpath("//input[@id='high-price']/parent::form//input[@type='submit']").click()
 
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.ID, "filters")))
     driver.find_element_by_id("filters").find_element_by_xpath("//span[text()='iOS']").click()
@@ -63,7 +64,8 @@ def test_amazon(driver):
             print(price.find_element_by_class_name('a-price-symbol').text + price.find_element_by_class_name('a-price-whole').text + '.' + price.find_element_by_class_name("a-price-fraction").text)
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"} }')
 
-        
+
+
 
 
 
