@@ -8,13 +8,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 
 now = datetime.now()
 buildName = now.strftime("%m/%d/%Y, %H:%M:%S")
 
 with open('browsers.json') as json_file:
     browsers = json.load (json_file)
-    
+
 @pytest.fixture(scope="module", params=browsers)
 def driver(request):
     username = os.getenv("BROWSERSTACK_USERNAME")
@@ -25,9 +27,15 @@ def driver(request):
     caps["project"] = 'CE-Challenge'
     caps["name"] = "amazon-scroller-" + request.param
     caps["build"] = buildName
+    options = Options()
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("dom.disable_beforeunload", True)
+    profile.update_preferences()
+    options.profile = profile
     driver = webdriver.Remote(
         command_executor="https://hub-cloud.browserstack.com/wd/hub",
-        desired_capabilities=caps)
+        desired_capabilities=caps,
+        options=options)
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed"} }')
     yield driver
     driver.quit()
@@ -49,7 +57,6 @@ def test_amazon(driver):
     driver.find_element_by_xpath("//span[text()='Sort by:']").click()
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Price: High to Low")))
     driver.find_element_by_link_text("Price: High to Low").click()
-
     
     items = driver.find_elements_by_xpath("//div[contains(@class,'s-main-slot')]//div[@data-component-type='s-search-result']")
     for item in items:
@@ -58,7 +65,7 @@ def test_amazon(driver):
         print(name.text)
         print("====Link====")
         print(name.find_element_by_tag_name('a').get_attribute("href"))
-        prices = item.find_elements_by_class_name("a-price")
+        prices = item.find_elements_by_xpath("//span[@class='a-price']")
         for price in prices:
             print("====price=====")
             print(price.find_element_by_class_name('a-price-symbol').text + price.find_element_by_class_name('a-price-whole').text + '.' + price.find_element_by_class_name("a-price-fraction").text)
