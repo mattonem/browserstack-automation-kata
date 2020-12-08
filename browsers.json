@@ -4,7 +4,7 @@
     "browser": "Chrome",
     "browser_version": "latest",
     "browserstack.local": "false",
-    "browserstack.selenium_version": "3.14.0"
+    "browserstack.selenium_version": "2.37.0"
 },
 "Firefox": {
     "os": "Windows",
@@ -12,14 +12,14 @@
     "browser": "Firefox",
     "browser_version": "latest",
     "browserstack.local": "false",
-    "browserstack.selenium_version": "3.14.0"
+    "browserstack.selenium_version": "3.141.59"
 },
-"Safari": {
-    "os": "OS X",
-    "os_version": "Catalina",
-    "browser": "Safari",
+"Edge": {
+    "os": "Windows",
+    "os_version": "10",
+    "browser": "Edge",
     "browser_version": "latest",
     "browserstack.local": "false",
-    "browserstack.selenium_version": "3.14.0"
+    "browserstack.selenium_version": "2.37.0"
 }
 }

@@ -10,6 +10,8 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
 import time
 
 now = datetime.now()
@@ -48,17 +50,8 @@ def test_inception(driver):
     driver.find_element_by_link_text("Sign in").click()
 
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.ID, "user_password")))
-    driver.find_element_by_id("user_email_login").send_keys(os.getenv("BROWSERSTACK_DUMMY_EMAIL_1"))
-    driver.find_element_by_id("user_email_login").send_keys(os.getenv("BROWSERSTACK_DUMMY_EMAIL_2"))
-    driver.find_element_by_id("user_email_login").send_keys(os.getenv("BROWSERSTACK_DUMMY_EMAIL_3"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_1"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_2"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_3"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_4"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_5"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_6"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_7"))
-    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD_8"))
+    driver.find_element_by_id("user_email_login").send_keys(os.getenv("BROWSERSTACK_DUMMY_EMAIL"))
+    driver.find_element_by_id("user_password").send_keys(os.getenv("BROWSERSTACK_DUMMY_PASSWORD"))
 
     driver.find_element_by_id("user_password").send_keys(Keys.ENTER)
 
@@ -70,11 +63,22 @@ def test_inception(driver):
     driver.find_element_by_xpath('//li[@data-named-version="win10_chrome_latest"]').click()
     WebDriverWait(driver, 40).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "toolbar__list")))
     WebDriverWait(driver, 40).until(expected_conditions.presence_of_element_located((By.ID, "bslive_video")))
-    time.sleep(5)
-    driver.find_element_by_id('flashlight-overlay').click()
-    webdriver.ActionChains(driver).key_down(Keys.CONTROL).send_keys("l").key_up(Keys.CONTROL).perform() 
-    webdriver.ActionChains(driver).send_keys("browserstack").send_keys(Keys.ENTER).perform()     
+    WebDriverWait(driver, 40).until(expected_conditions.presence_of_element_located((By.ID, "flashlight-overlay")))
+    canvas = driver.find_element_by_id('flashlight-overlay')
+    canvas.click()
+
+    ActionChains(driver)\
+        .move_to_element_with_offset(canvas, 350, 390)\
+        .click()\
+        .perform()
+    time.sleep(1)
+    ActionChains(driver)\
+        .send_keys("browserstack" + Keys.ENTER)\
+        .release()\
+        .perform()
+    time.sleep(5)     
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"} }')
+
 
 
 
