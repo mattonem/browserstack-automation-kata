@@ -57,7 +57,6 @@ def test_amazon(driver):
     driver.find_element_by_xpath("//span[text()='Sort by:']").click()
     WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Price: High to Low")))
     driver.find_element_by_link_text("Price: High to Low").click()
-    
     items = driver.find_elements_by_xpath("//div[contains(@class,'s-main-slot')]//div[@data-component-type='s-search-result']")
     for item in items:
         name=item.find_element_by_tag_name("h2")
@@ -65,7 +64,7 @@ def test_amazon(driver):
         print(name.text)
         print("====Link====")
         print(name.find_element_by_tag_name('a').get_attribute("href"))
-        prices = item.find_elements_by_xpath("//span[@class='a-price']")
+        prices = item.find_elements_by_xpath(".//span[@class='a-price']")
         for price in prices:
             print("====price=====")
             print(price.find_element_by_class_name('a-price-symbol').text + price.find_element_by_class_name('a-price-whole').text + '.' + price.find_element_by_class_name("a-price-fraction").text)
