@@ -10,7 +10,6 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                cd browserstack-ce-challenge && python3 ../behave-parallel/bin/behave --process 9 
             }
         }
     }
