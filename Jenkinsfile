@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    stages {
         stage('Loading dependecy') {
             steps {
                 echo 'loading behave-parallel'
@@ -12,4 +13,5 @@ pipeline {
                 cd browserstack-ce-challenge && python3 ../behave-parallel/bin/behave --process 9 
             }
         }
+    }
  }
