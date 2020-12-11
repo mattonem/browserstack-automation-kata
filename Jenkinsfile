@@ -4,7 +4,13 @@ pipeline {
         stage('Loading dependecy') {
             steps {
                 echo 'loading behave-parallel'
-                sh 'git clone https://github.com/xrg/behave-parallel.git'       
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/master']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'RelativeTargetDirectory', 
+                    relativeTargetDir: 'behave-parallel']], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/xrg/behave-parallel.git']]])    
             }
         }
         stage('Test') {
