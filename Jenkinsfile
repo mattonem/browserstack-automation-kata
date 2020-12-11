@@ -4,7 +4,7 @@ pipeline {
         stage('Loading dependecy') {
             steps {
                 echo 'loading behave-parallel'
-                git clone "https://github.com/xrg/behave-parallel.git"        
+                git 'https://github.com/xrg/behave-parallel.git'       
             }
         }
         stage('Test') {
