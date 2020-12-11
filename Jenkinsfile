@@ -10,6 +10,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
+                pwd
+                sh 'ls'
             }
         }
     }
