@@ -16,7 +16,10 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh 'python3 behave-parallel/bin/behave --process 9 '
+                browserstack(credentialsId: 'e4bfb5f8-607a-41aa-87d0-8fa493e9ca8c') {
+                    sh 'python3 behave-parallel/bin/behave --process 9 '
+                }
+                
             }
         }
     }
