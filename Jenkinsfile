@@ -19,10 +19,10 @@ pipeline {
                 sh 'python3 behave-parallel/bin/behave --process 9 '
             }
         }
-        stage('clean up') {
-            steps {
-                deleteDir()
-            }
+    }
+     post {
+        always {
+            deleteDir() /* clean up our workspace */
         }
     }
  }
