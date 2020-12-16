@@ -2,7 +2,7 @@ pipeline {
     agent any
     triggers {
         cron('H 0 * * *')
-        pollSCM('H */4 * * 1-5')
+        pollSCM('H */60 * * 1-5')
     }
     stages {
         stage('Loading dependecy') {
@@ -31,6 +31,7 @@ pipeline {
      post {
         always {
             deleteDir() /* clean up our workspace */
+            browserStackReportPublisher 'automate'
         }
     }
  }

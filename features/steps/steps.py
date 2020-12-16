@@ -44,7 +44,7 @@ def step_impl(context):
         print(name.find_element_by_tag_name('a').get_attribute("href"))
         prices = item.find_elements_by_xpath('.//span[@class="a-price"]')
         for price in prices:
-            print("====price=====")
+            print("====Price====")
             print(price.find_element_by_class_name('a-price-symbol').text + price.find_element_by_class_name('a-price-whole').text + '.' + price.find_element_by_class_name("a-price-fraction").text)
     context.browser.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"} }')
 

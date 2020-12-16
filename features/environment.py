@@ -14,8 +14,7 @@ from behave.fixture import fixture, use_fixture_by_tag
 from pprint import pprint
 
 def before_feature(context, feature):
-	now = datetime.now()
-	context.buildName = now.strftime("%m/%d/%Y, %H:%M:%S")
+	context.buildName = os.getenv("BROWSERSTACK_BUILD_NAME")
 
 
 @fixture
